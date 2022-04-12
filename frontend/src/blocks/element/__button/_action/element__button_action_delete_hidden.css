@@ -1,0 +1,4 @@
+.element__button_action_delete_hidden {
+  visibility: hidden;
+  opacity: 0;
+}
