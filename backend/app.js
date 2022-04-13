@@ -9,6 +9,7 @@ const {
   registerValidation,
   loginValidation,
 } = require('./middlewares/validation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -23,16 +24,18 @@ async function main() {
 }
 
 main();
+app.use(requestLogger);
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registerValidation, createUser);
 
-app.use(auth);
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+app.use('/users', auth, require('./routes/users'));
+app.use('/cards', auth, require('./routes/cards'));
 // eslint-disable-next-line no-unused-vars
 app.use((req, res) => {
   throw new ErrorNotFound("Sorry can't find that!");
 });
+
+app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
