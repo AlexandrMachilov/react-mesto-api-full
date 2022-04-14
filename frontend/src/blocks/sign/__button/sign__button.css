@@ -1,0 +1,9 @@
+.sign__button {
+  padding: 0;
+  transition: opacity 0.4s ease;
+  cursor: pointer;
+}
+
+.sign__button:hover {
+  opacity: 0.6;
+}

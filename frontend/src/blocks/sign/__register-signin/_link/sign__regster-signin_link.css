@@ -1,0 +1,15 @@
+.sign__regster-signin_link {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 1.21;
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+
+.sign__regster-signin_link:hover {
+  opacity: 0.6;
+}

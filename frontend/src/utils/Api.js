@@ -65,25 +65,6 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  /*   likeCard(id) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/cards/${id}/likes`, {
-      method: "PUT",
-      headers: {
-        authorization: this.token,
-      },
-    }).then(this._getResponseData);
-  }
-
-  deleteLike(id) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/cards/${id}/likes`, {
-      data._id
-      method: "DELETE",
-      headers: {
-        authorization: this.token,
-      },
-    }).then(this._getResponseData);
-  } */
-
   changeLikeCardStatus(id, isLiked) {
     if (isLiked) {
       return fetch(`${this.adress}/v1/${this.cohortID}/cards/${id}/likes`, {
