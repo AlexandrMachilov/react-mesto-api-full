@@ -30,6 +30,7 @@ function App() {
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     Promise.all([api.getProfileInfo(), api.getInitialCards()])
       .then(([userData, cards]) => {
         setCards(cards);
@@ -38,10 +39,10 @@ function App() {
       .catch((err) => {
         console.log('Ошибка', err);
       });
-  }, []);
+  }, [isLoggedIn]);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -91,8 +92,8 @@ function App() {
   function handleUpdateUser(currentUser) {
     api
       .editProfileData(currentUser)
-      .then((newUserData) => {
-        setCurrentUser(newUserData);
+      .then((res) => {
+        setCurrentUser(res);
         closeAllPopups();
       })
       .catch((err) => {
@@ -127,7 +128,7 @@ function App() {
   function handleLogin(formData) {
     Auth.authorize(formData.password, formData.email)
       .then((data) => {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.jwt);
         setIsLoggedIn(true);
         navigate('/');
       })
@@ -142,7 +143,7 @@ function App() {
     Auth.register(formData.password, formData.email)
       .then(() => {
         setIsDataCorrect(true);
-        navigate('./sign-in');
+        navigate('./signin');
       })
       .catch((err) => {
         console.log(err);
@@ -159,7 +160,7 @@ function App() {
       Auth.checkToken(token)
         .then((res) => {
           if (res) {
-            setUserEmail(res.data.email);
+            setUserEmail(res.email);
             setIsLoggedIn(true);
           }
         })
@@ -179,7 +180,7 @@ function App() {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     setUserEmail('');
-    navigate('/sign-in');
+    navigate('/signin');
   }
 
   return (
@@ -206,10 +207,10 @@ function App() {
               }
             />
             <Route
-              path='/sign-up'
+              path='/signup'
               element={<Register handleRegister={handleRegister} />}
             />
-            <Route path='/sign-in' element={<Login handleLogin={handleLogin} />} />
+            <Route path='/signin' element={<Login handleLogin={handleLogin} />} />
           </Routes>
 
           <Footer />

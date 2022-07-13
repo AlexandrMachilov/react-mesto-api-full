@@ -4,7 +4,7 @@ const ProtectedRoute = ({ children, isLoggedIn }) => {
   if (isLoggedIn) {
     return children;
   }
-  return <Navigate to='./sign-in' />;
+  return <Navigate to='./signin' />;
 };
 
 export default ProtectedRoute;

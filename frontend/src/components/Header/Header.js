@@ -9,19 +9,20 @@ function Header({ isLoggedIn, userEmail, handleExit }) {
     text: '',
   };
   function headerAuthText() {
+    // eslint-disable-next-line default-case
     switch (location.pathname) {
       case '/':
-        button.link = '/sign-in';
+        button.link = '/signin';
         button.text = 'Выйти';
         return button;
 
-      case '/sign-in':
-        button.link = '/sign-up';
+      case '/signin':
+        button.link = '/signup';
         button.text = 'Зарегистрироваться';
         return button;
 
-      case '/sign-up':
-        button.link = '/sign-in';
+      case '/signup':
+        button.link = '/signin';
         button.text = 'Войти';
         return button;
     }

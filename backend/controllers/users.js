@@ -4,13 +4,12 @@ const User = require('../models/user');
 const ErrorNotFound = require('../errors/ErrorNotFound');
 const ErrorConflict = require('../errors/ErrorConflict');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
-const ErrorForbidden = require('../errors/ErrorForbidden');
 
 const { SALT_ROUNDS, JWT_SECRET } = require('../config/config');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -19,7 +18,7 @@ module.exports.getUserById = (req, res, next) => {
     .orFail(() => {
       throw new ErrorNotFound('Пользователь не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -28,7 +27,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .orFail(() => {
       throw new ErrorNotFound(`Пользователь с id ${req.params.id} не найден`);
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -53,56 +52,45 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => User.findOne({ _id: user._id }))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
 module.exports.editUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.findById(req.user._id)
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(() => {
+      throw new ErrorNotFound(`Пользователь с id ${req.user._id} не найден`);
+    })
     .then((user) => {
-      if (req.user._id !== user._id.toString()) {
-        throw new ErrorForbidden('Можно редактировать только свои данные');
-      }
-      User.findByIdAndUpdate(
-        req.user._id,
-        { name, about },
-        {
-          new: true,
-          runValidators: true,
-        },
-      )
-        .orFail(() => {
-          throw new ErrorNotFound(
-            `Пользователь с id ${req.user._id} не найден`,
-          );
-        })
-        .then(() => {
-          res.send({ data: user });
-        });
+      res.send(user);
     })
     .catch(next);
 };
 
 module.exports.editUsersAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findById(req.user._id)
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(() => {
+      throw new ErrorNotFound(`Пользователь с id ${req.user._id} не найден`);
+    })
     .then((user) => {
-      if (req.user._id !== user._id.toString()) {
-        throw new ErrorForbidden('Можно редактировать только свои данные');
-      }
-      User.findByIdAndUpdate(
-        req.user._id,
-        { avatar },
-        {
-          new: true,
-          runValidators: true,
-        },
-      )
-        .orFail(() => {
-          throw new ErrorNotFound(`Пользователь с id ${req.user._id} не найден`);
-        })
-        .then(() => res.send({ data: user }));
+      res.send(user);
     })
     .catch(next);
 };
@@ -129,9 +117,3 @@ module.exports.login = (req, res, next) => {
 
     .catch(next);
 };
-
-// добавить куки после теста
-/* res.cookie('jwt', token, {
-        maxAge: 3600000,
-        httpOnly: true,
-      }); */

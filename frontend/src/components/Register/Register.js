@@ -55,7 +55,7 @@ function Register({ handleRegister }) {
         </form>
         <div className='sign__regster-signin'>
           <p className='sign__regster-signin_title'>Уже зарегистрированы?</p>
-          <Link to='/sign-in' className='sign__regster-signin_link'>
+          <Link to='/signin' className='sign__regster-signin_link'>
             &ensp;Войти
           </Link>
         </div>

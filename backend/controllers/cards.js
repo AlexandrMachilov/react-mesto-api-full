@@ -4,15 +4,17 @@ const ErrorForbidden = require('../errors/ErrorForbidden');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.send({ data: cards }))
+    .sort({ _id: -1 })
+
+    .then((cards) => res.send(cards))
     .catch(next);
 };
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
 
-  Card.create({ name, link, owner: req.user })
-    .then((card) => res.send({ data: card }))
+  Card.create({ name, link, owner: req.user._id })
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -30,20 +32,24 @@ module.exports.deleteCard = (req, res, next) => {
           throw new ErrorNotFound(`Карточка с id ${req.params.id} не найдена`);
         })
         .then(() => {
-          res.send({ data: card });
+          res.send(card);
         });
     })
     .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
-  Card.findByIdAndUpdate(req.params.id, {
-    $addToSet: { likes: req.user._id },
-  })
+  Card.findByIdAndUpdate(
+    req.params.id,
+    {
+      $addToSet: { likes: req.user._id },
+    },
+    { new: true },
+  )
     .orFail(() => {
       throw new ErrorNotFound(`Карточка с id ${req.params.id} не найдена`);
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -56,6 +62,6 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new ErrorNotFound(`Карточка с id ${req.params.id} не найдена`);
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };

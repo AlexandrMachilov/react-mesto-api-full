@@ -1,8 +1,8 @@
 class Api {
-  constructor({ adress, cohortID, token }) {
+  constructor({ adress }) {
     this.adress = adress;
-    this.cohortID = cohortID;
-    this.token = token;
+    /* this.cohortID = cohortID;
+    this.token = token; */
   }
 
   _getResponseData(res) {
@@ -13,26 +13,26 @@ class Api {
   }
 
   getProfileInfo() {
-    return fetch(`${this.adress}/v1/${this.cohortID}/users/me`, {
+    return fetch(`${this.adress}/users/me`, {
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
       },
     }).then(this._getResponseData);
   }
 
   getInitialCards() {
-    return fetch(`${this.adress}/v1/${this.cohortID}/cards`, {
+    return fetch(`${this.adress}/cards`, {
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
       },
     }).then(this._getResponseData);
   }
 
   editProfileData(data) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/users/me`, {
+    return fetch(`${this.adress}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -43,10 +43,10 @@ class Api {
   }
 
   createCard(data) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/cards`, {
+    return fetch(`${this.adress}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -57,37 +57,37 @@ class Api {
   }
 
   deleteCard(data) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/cards/${data._id}`, {
+    return fetch(`${this.adress}/cards/${data._id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
       },
     }).then(this._getResponseData);
   }
 
   changeLikeCardStatus(id, isLiked) {
     if (isLiked) {
-      return fetch(`${this.adress}/v1/${this.cohortID}/cards/${id}/likes`, {
+      return fetch(`${this.adress}/cards/${id}/likes`, {
         method: 'PUT',
         headers: {
-          authorization: this.token,
+          authorization: getToken(),
         },
       }).then(this._getResponseData);
     } else {
-      return fetch(`${this.adress}/v1/${this.cohortID}/cards/${id}/likes`, {
+      return fetch(`${this.adress}/cards/${id}/likes`, {
         method: 'DELETE',
         headers: {
-          authorization: this.token,
+          authorization: getToken(),
         },
       }).then(this._getResponseData);
     }
   }
 
   editAvatar(data) {
-    return fetch(`${this.adress}/v1/${this.cohortID}/users/me/avatar`, {
+    return fetch(`${this.adress}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this.token,
+        authorization: getToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -96,11 +96,17 @@ class Api {
     }).then(this._getResponseData);
   }
 }
-
-const api = new Api({
+const getToken = () => {
+  return `Bearer ${localStorage.getItem('token')}`;
+};
+/* const api = new Api({
   adress: 'https://mesto.nomoreparties.co',
   cohortID: 'cohort-32',
   token: '6d2de758-1877-4081-94a9-68820dbef110',
+}); */
+const api = new Api({
+  /* adress: 'https://api.mesto.ypraktikum.nomoredomains.work', */
+  adress: 'http://localhost:3001',
 });
 
 export default api;
