@@ -1,8 +1,6 @@
 class Api {
   constructor({ adress }) {
     this.adress = adress;
-    /* this.cohortID = cohortID;
-    this.token = token; */
   }
 
   _getResponseData(res) {
