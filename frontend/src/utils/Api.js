@@ -105,8 +105,8 @@ const getToken = () => {
   token: '6d2de758-1877-4081-94a9-68820dbef110',
 }); */
 const api = new Api({
-  /* adress: 'https://api.mesto.ypraktikum.nomoredomains.work', */
-  adress: 'http://localhost:3001',
+  adress: 'https://api.mesto.ypraktikum.nomoredomains.work',
+  /* adress: 'http://localhost:3001', */
 });
 
 export default api;

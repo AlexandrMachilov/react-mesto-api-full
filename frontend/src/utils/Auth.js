@@ -1,6 +1,6 @@
 /* export const BASE_URL = 'https://auth.nomoreparties.co'; */
-/* export const BASE_URL = 'api.mesto.ypraktikum.nomoredomains.work'; */
-export const BASE_URL = 'http://localhost:3001';
+export const BASE_URL = 'api.mesto.ypraktikum.nomoredomains.work';
+/* export const BASE_URL = 'http://localhost:3001'; */
 
 const HEADERS = {
   Accept: 'application/json',
