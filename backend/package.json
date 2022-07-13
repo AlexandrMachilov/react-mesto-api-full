@@ -28,12 +28,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexandrMachilov/express-mesto-gha.git"
+    "url": "git+https://github.com/AlexandrMachilov/react-mesto-api-full"
   },
   "author": "AlexandrMachilov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AlexandrMachilov/express-mesto-gha/issues"
+    "url": "https://github.com/AlexandrMachilov/react-mesto-api-full/issues"
   },
-  "homepage": "https://github.com/AlexandrMachilov/express-mesto-gha#readme"
+  "homepage": "./"
 }
