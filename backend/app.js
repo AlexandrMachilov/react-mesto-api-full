@@ -25,7 +25,16 @@ async function main() {
 }
 
 main();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://mesto.ypraktikum.nomoredomains.work/',
+      'https://mesto.ypraktikum.nomoredomains.work/',
+    ],
+    credentials: true,
+  }),
+);
 app.use(requestLogger);
 
 app.post('/signin', loginValidation, login);
