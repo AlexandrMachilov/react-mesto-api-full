@@ -1,3 +1,5 @@
+const BASE_URL = process.env.MESTO_BASE_URL || 'http://localhost:3001';
+
 class Api {
   constructor({ adress }) {
     this.adress = adress;
@@ -97,14 +99,11 @@ class Api {
 const getToken = () => {
   return `Bearer ${localStorage.getItem('token')}`;
 };
-/* const api = new Api({
-  adress: 'https://mesto.nomoreparties.co',
-  cohortID: 'cohort-32',
-  token: '6d2de758-1877-4081-94a9-68820dbef110',
-}); */
+
 const api = new Api({
-  adress: 'https://api.mesto.ypraktikum.nomoredomains.work',
+  /* adress: 'https://api.mesto.ypraktikum.nomoredomains.work', */
   /* adress: 'http://localhost:3001', */
+  adress: BASE_URL,
 });
 
 export default api;

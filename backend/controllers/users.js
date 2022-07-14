@@ -1,11 +1,10 @@
+const { NODE_ENV, JWT_SECRET, SALT_ROUNDS } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ErrorNotFound = require('../errors/ErrorNotFound');
 const ErrorConflict = require('../errors/ErrorConflict');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
-
-const { SALT_ROUNDS, JWT_SECRET } = require('../config/config');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -108,9 +107,12 @@ module.exports.login = (req, res, next) => {
         if (!isValid) {
           throw new ErrorUnauthorized('Неправильные email или пароль');
         }
-        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: '7d',
-        });
+
+        const token = jwt.sign(
+          { _id: user._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+          { expiresIn: '7d' },
+        );
         res.send({ jwt: token });
       });
     })
