@@ -1,4 +1,4 @@
-const BASE_URL = process.env.MESTO_BASE_URL || 'http://localhost:3001';
+const BASE_URL = process.env.MESTO_BASE_URL || 'http://localhost:3000';
 
 class Api {
   constructor({ adress }) {
