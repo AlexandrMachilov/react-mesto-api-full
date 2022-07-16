@@ -5,7 +5,7 @@ const User = require('../models/user');
 const ErrorNotFound = require('../errors/ErrorNotFound');
 const ErrorConflict = require('../errors/ErrorConflict');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
-const JWT_SECRET = require('../config/config');
+const { JWT_SECRET } = require('../config/config');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})

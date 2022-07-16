@@ -125,8 +125,8 @@ function App() {
       });
   }
 
-  function handleLogin(formData) {
-    Auth.authorize(formData.password, formData.email)
+  function handleLogin({ password, email }) {
+    Auth.authorize({ password, email })
       .then((data) => {
         localStorage.setItem('token', data.jwt);
         setIsLoggedIn(true);
