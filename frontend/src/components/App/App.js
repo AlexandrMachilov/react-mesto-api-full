@@ -139,8 +139,8 @@ function App() {
       });
   }
 
-  function handleRegister(formData) {
-    Auth.register(formData.password, formData.email)
+  function handleRegister({ password, email }) {
+    Auth.register({ password, email })
       .then(() => {
         setIsDataCorrect(true);
         navigate('./signin');

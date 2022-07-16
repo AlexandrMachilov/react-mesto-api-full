@@ -14,7 +14,7 @@ const getJson = (res) => {
   throw new Error({ status: res.status });
 };
 
-export const register = (password, email) => {
+export const register = ({ password, email }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: HEADERS,
