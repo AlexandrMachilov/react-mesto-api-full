@@ -1,4 +1,4 @@
-const { NODE_ENV, JWT_SECRET, SALT_ROUNDS } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -31,25 +31,25 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
   User.findOne({ email })
     .then((user) => {
       if (user) {
         throw new ErrorConflict(`Пользователь ${email} уже существует`);
       }
-      return bcrypt.hash(password, SALT_ROUNDS);
+      return bcrypt.hash(password, 10);
     })
 
-    .then((hash) => User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    }))
+    .then((hash) =>
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      })
+    )
     .then((user) => User.findOne({ _id: user._id }))
     .then((user) => res.send(user))
     .catch(next);
@@ -63,7 +63,7 @@ module.exports.editUser = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    },
+    }
   )
     .orFail(() => {
       throw new ErrorNotFound(`Пользователь с id ${req.user._id} не найден`);
@@ -83,7 +83,7 @@ module.exports.editUsersAvatar = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    },
+    }
   )
     .orFail(() => {
       throw new ErrorNotFound(`Пользователь с id ${req.user._id} не найден`);
@@ -107,12 +107,14 @@ module.exports.login = (req, res, next) => {
         if (!isValid) {
           throw new ErrorUnauthorized('Неправильные email или пароль');
         }
-
-        const token = jwt.sign(
+        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: '7d',
+        });
+        /* const token = jwt.sign(
           { _id: user._id },
           NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-          { expiresIn: '7d' },
-        );
+          { expiresIn: '7d' }
+        ); */
         res.send({ jwt: token });
       });
     })

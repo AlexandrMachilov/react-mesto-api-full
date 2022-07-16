@@ -1,5 +1,5 @@
-const BASE_URL = process.env.MESTO_BASE_URL || 'http://localhost:3000';
-
+/* const BASE_URL = process.env.MESTO_BASE_URL || 'http://localhost:3001'; */
+const BASE_URL = 'https://api.mesto.ypraktikum.nomoredomains.work';
 class Api {
   constructor({ adress }) {
     this.adress = adress;
