@@ -15,7 +15,7 @@ const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-console.log(process.env);
+
 app.use(express.json());
 
 async function main() {
@@ -30,6 +30,12 @@ main();
 app.use(cors);
 
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registerValidation, createUser);

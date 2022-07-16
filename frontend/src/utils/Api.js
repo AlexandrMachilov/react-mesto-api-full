@@ -1,5 +1,5 @@
 const BASE_URL = 'https://api.mesto.ypraktikum.nomoredomains.work';
-/* const BASE_URL = 'https://api.mesto.ypraktikum.nomoredomains.work'; */
+
 class Api {
   constructor({ adress }) {
     this.adress = adress;
@@ -101,8 +101,6 @@ const getToken = () => {
 };
 
 const api = new Api({
-  /* adress: 'https://api.mesto.ypraktikum.nomoredomains.work', */
-  /* adress: 'http://localhost:3001', */
   adress: BASE_URL,
 });
 
