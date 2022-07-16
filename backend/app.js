@@ -1,8 +1,7 @@
-/* require('dotenv').config(); */
+require('dotenv').config();
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
-/* const cors = require('cors'); */
 const { login, createUser } = require('./controllers/users');
 const ErrorNotFound = require('./errors/ErrorNotFound');
 const { auth } = require('./middlewares/auth');
@@ -16,7 +15,7 @@ const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
+console.log(process.env);
 app.use(express.json());
 
 async function main() {
@@ -27,19 +26,7 @@ async function main() {
 }
 
 main();
-/* app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',
-      'https://localhost:3000',
-      'http://localhost:3001',
-      'https://localhost:3001',
-      'http://mesto.ypraktikum.nomoredomains.work/',
-      'https://mesto.ypraktikum.nomoredomains.work/',
-    ],
-    credentials: true,
-  })
-); */
+
 app.use(cors);
 
 app.use(requestLogger);
