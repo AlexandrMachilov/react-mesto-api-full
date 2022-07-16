@@ -43,7 +43,7 @@ app.post('/signup', registerValidation, createUser);
 app.use('/users', auth, require('./routes/users'));
 app.use('/cards', auth, require('./routes/cards'));
 // eslint-disable-next-line no-unused-vars
-app.use((req, res) => {
+app.use(auth, (req, res) => {
   throw new ErrorNotFound("Sorry can't find that!");
 });
 

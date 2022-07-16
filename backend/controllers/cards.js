@@ -27,7 +27,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (req.user._id !== card.owner.toString()) {
         throw new ErrorForbidden('Можно удалять только свои карточки');
       }
-      Card.findByIdAndRemove(req.params.id)
+      return Card.findByIdAndRemove(req.params.id)
         .orFail(() => {
           throw new ErrorNotFound(`Карточка с id ${req.params.id} не найдена`);
         })

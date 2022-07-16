@@ -5,6 +5,7 @@ const User = require('../models/user');
 const ErrorNotFound = require('../errors/ErrorNotFound');
 const ErrorConflict = require('../errors/ErrorConflict');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
+const ErrorValidation = require('../errors/ErrorVaidation');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -52,7 +53,13 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => User.findOne({ _id: user._id }))
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ErrorValidation('Некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.editUser = (req, res, next) => {
@@ -71,7 +78,13 @@ module.exports.editUser = (req, res, next) => {
     .then((user) => {
       res.send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ErrorValidation('Некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.editUsersAvatar = (req, res, next) => {
@@ -91,7 +104,13 @@ module.exports.editUsersAvatar = (req, res, next) => {
     .then((user) => {
       res.send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ErrorValidation('Некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.login = (req, res, next) => {
@@ -112,6 +131,7 @@ module.exports.login = (req, res, next) => {
           NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
           { expiresIn: '7d' },
         );
+        console.log(token);
         res.send({ jwt: token });
       });
     })

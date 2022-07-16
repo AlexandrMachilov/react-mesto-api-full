@@ -9,18 +9,24 @@ const urlValidation = (value, helper) => {
 };
 
 const registerValidation = celebrate({
-  [Segments.BODY]: Joi.object()
-    .keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-    })
-    .unknown(true),
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(),
+    name: Joi.string().min(2).max(30).default('Жак-Ив Кусто'),
+    about: Joi.string().min(2).max(30).default('Исследователь'),
+    avatar: Joi.string()
+      .default(
+        'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      )
+      .custom(urlValidation)
+      .messages({ 'string.notURL': 'Некорректный URL' }),
+  }),
 });
 
 const loginValidation = celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required().min(),
   }),
 });
 
