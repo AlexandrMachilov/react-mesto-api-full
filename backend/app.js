@@ -2,7 +2,7 @@
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+/* const cors = require('cors'); */
 const { login, createUser } = require('./controllers/users');
 const ErrorNotFound = require('./errors/ErrorNotFound');
 const { auth } = require('./middlewares/auth');
@@ -12,6 +12,7 @@ const {
   loginValidation,
 } = require('./middlewares/validation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,7 +27,7 @@ async function main() {
 }
 
 main();
-app.use(
+/* app.use(
   cors({
     origin: [
       'http://localhost:3000',
@@ -38,7 +39,8 @@ app.use(
     ],
     credentials: true,
   })
-);
+); */
+app.use(cors);
 
 app.use(requestLogger);
 
