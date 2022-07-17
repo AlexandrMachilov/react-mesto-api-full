@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.mesto.ypraktikum.nomoredomains.work';
+export const BASE_URL = 'https://api.mesto.ypraktikum.nomoredomains.work';
+/*export const BASE_URL = 'http://localhost:3000';*/
 
 class Api {
   constructor({ adress }) {
